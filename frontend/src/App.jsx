@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-
+import {Home} from "./Home"
 // Class component (commented out since not used)
 // class Components extends React.Component {
 //   render() {
@@ -20,6 +20,7 @@ const App = () => {
       <h1>Welcome to the App</h1>
       <Card />
       <Card />
+      <home/>
       <Card />
       <Card />
     </div>
