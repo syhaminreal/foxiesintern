@@ -1,30 +1,15 @@
-import React from 'react';
+
 import './App.css';
-import {Home} from "./Home"
-// Class component (commented out since not used)
-// class Components extends React.Component {
-//   render() {
-//     return <h2>Class Components</h2>;
-//   }
-// }
+import Create from './crud/create';
 
-const Card = () => {
+function App ( ){
   return (
-    <h2>Arrow function working here</h2>
-  );
-};
+    <div className='main'>
+    <h2 className='main-header'>React Crud Operations</h2> 
 
-const App = () => {
-  return (
-    <div>
-      <h1>Welcome to the App</h1>
-      <Card />
-      <Card />
-      <home/>
-      <Card />
-      <Card />
+    <Create/> 
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
