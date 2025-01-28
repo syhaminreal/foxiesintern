@@ -1,15 +1,31 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-import './App.css';
-import Create from './crud/create';
+function App() {
+  const [products, setProducts] = useState([]);
 
-function App ( ){
+  useEffect(() => {
+    axios
+      .get('http://localhost:3000/api/products')
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
+
   return (
-    <div className='main'>
-    <h2 className='main-header'>React Crud Operations</h2> 
-
-    <Create/> 
-    </div>
-  )
+    <>
+      <h1>Crud with Reed</h1>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>{product.name}</li>
+          
+        ))}
+      </ul>
+    </>
+  );
 }
 
-export default App
+export default App;
