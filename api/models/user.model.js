@@ -1,7 +1,8 @@
+import { Schema } from "mongoose"
+
+const mongoose = require(mongoose)
 
 
-import jwt from "jsonwebtoekn"
-import bcrypt from "bcrypt"
 
 const userSchema = new schema (
     {
@@ -33,6 +34,22 @@ const userSchema = new schema (
         },
         coverImage: {
             type: String, //cloundanry url
+        }, 
+        watchHistory: {
+            type: Schema.Types.ObjectId,
+            ref: "Video"
+        },
+        password: {
+            type: String,
+            required:  [true, 'Password is required']
+        },
+        refeshToken: {
+            type: String,
         }
+    },
+    {
+        Timestamps: true
     }
 )
+
+export const User = mongoose.model("User", userSchema)
