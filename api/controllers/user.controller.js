@@ -1,11 +1,7 @@
 const registerUser = asyncHandler(async(req, res) => {
-    res.status(500).json({
-        message: "Chai aur code"
+    res.status(200).json({
+        message: "ok"
     })
-
-
-
-
 //steps of reg user 
 //get user detILS from forntend
 // validation not empty and uniques fileds
