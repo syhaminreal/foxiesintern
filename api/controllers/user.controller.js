@@ -4,6 +4,23 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
+const generateAcessAndRefeshTokens = async(userId) => {
+    try{
+     const user =  await User.findById(userId)
+     const acessToken  =   user.generateAcessToken()
+     const refeshToken  =   user.generateRefeshToken()
+
+     user.refeshToken = refeshToken
+   await user.save({validateBeforeSave : false })
+
+   return {acessToken, refeshToken}
+
+
+    } catch (error) {
+        throw new ApiError(500, "Somethimg went worng while gentrating tefesha nd acess token")
+    }
+} 
+
 const registerUser = asyncHandler(async (req, res) => {
   // Steps for registering a user:
   // 1. Get user details from frontend
@@ -64,4 +81,67 @@ const registerUser = asyncHandler(async (req, res) => {
   return res.status(201).json(new ApiResponse(201, createdUser, "User registered successfully"));
 });
 
-export { registerUser };
+
+const loginUser = asyncHandler(async (req, res) =>{
+
+    //usern name email and password req body => data
+    //user name or email
+    //find the user
+    //password match
+    //acess a nd refesh token
+    //role check
+    //send the values through cookie
+    //send responce of beong complted
+
+    const {email, usename, password} = req.body
+    if (!username || email){
+        throw new ApiError(400, "username or email is required")
+    }
+
+   const user = await  User.findOne({
+        $or: [{username}, {email}]})
+})
+
+if(!user){
+    throw new ApiError(404," User does not exist")
+}
+const isPasswordValid = await user.isPasswordCorrect(password)
+if(!isPasswordValid){
+ throw new ApiError(401,"Invalid user credentials")
+
+}
+
+    const {acessToken, refeshToken} = await generateAcessAndRefeshTokens(user._id)
+
+   const loggedInUser = await  User.findById(user._id).select("-password -refeshToken")
+
+
+   const options = {
+    httpsOnly : true,
+    secure: true
+   }
+
+   return res.status(200)
+   .cookie("acessToekn", accessToken,  options)
+   .cookie("refeshToken", refeshToken, options)
+   .json(
+    new ApiResponse(
+        200, {
+            user: loggedInUser, acessToken,
+            refrehToken
+        },
+        "User loggged in Sucessfully"
+    )
+   )
+
+
+
+   const logoutUser = asynchandler(async(req, res) => {
+    
+   })
+
+
+export { registerUser,
+    loginUser,
+    logoutUser
+ };
