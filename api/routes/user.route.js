@@ -5,7 +5,20 @@ const router = require('express')
 const  router  = Router()
 
 
-router.route("/register").post(registerUser)
+router.route("/register").post(
+    uploads.fileds([
+        {
+            name: "avtar",
+            maxCount:1
+        },
+        {
+            name: "coverImage",
+            maxCount: 1
+        }
+
+    ]),
+    registerUser
+)
 
 // router.route("/login").post(loginUser)
 
