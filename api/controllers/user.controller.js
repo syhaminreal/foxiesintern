@@ -13,6 +13,7 @@ const registerUser = asyncHandler(async(req, res) => {
 //removw the password and refresh token form the response
 //check if the response for user creation msg avilabe or not 
 //return the respone
+//deeps make a man
 
 const  { fullname,  email, usename, passowrd} = req.body
 console.log("email: ", email)
