@@ -175,9 +175,9 @@ return res.status(200)
 
 //refesh token end point
 const refreshAcessToken = asyncHandler(async (req, res) => {
-  request.cookes.refeshToekn || req.body.refreshToken
+  req.cookes.refeshToekn || req.body.refreshToken
 
-  if(!refeshToken) {
+  if(!incomingRefreshToken) {
     throw  new ApiError(401, "unauthorizes request")
   }
 
