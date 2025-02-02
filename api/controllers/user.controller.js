@@ -1,24 +1,25 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
-import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
+import { User } from "../models/user.model.js"
+import { uploadOnCloudinary } from "../utils/cloudinary.js"
+import { ApiResponse } from "../utils/ApiResponse.js"
+import jwt from "jsonwebtoken"
 
 // Function to generate access and refresh tokens for a user
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
-    const user = await User.findById(userId);
-    if (!user) throw new ApiError(404, "User not found");
+    const user = await User.findById(userId)
+    if (!user) throw new ApiError(404, "User not found")
 
-    const accessToken = user.generateAccessToken();
-    const refreshToken = user.generateRefreshToken();
+    const accessToken = user.generateAccessToken()
+    const refreshToken = user.generateRefreshToken()
 
-    user.refreshToken = refreshToken;
-    await user.save({ validateBeforeSave: false });
+    user.refreshToken = refreshToken
+    await user.save({ validateBeforeSave: false })
 
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken }
   } catch (error) {
-    throw new ApiError(500, "Something went wrong while generating refresh and access token");
+    throw new ApiError(500, "Something went wrong while generating refresh and access token")
   }
 };
 
@@ -172,7 +173,61 @@ return res.status(200)
 .json(new ApiResponse(200, {}, "User logged out"))
 })
 
+//refesh token end point
+const refreshAcessToken = asyncHandler(async (req, res) => {
+  request.cookes.refeshToekn || req.body.refreshToken
+
+  if(!refeshToken) {
+    throw  new ApiError(401, "unauthorizes request")
+  }
+
+  //verify the REFESH token
+  try {
+    
+   const decodedToken =  jwt.verify(
+      incomingRefreshToken,
+      process.env.REFESH_TOKEN_SECRET
+  
+    )
+    const user = await User.findById(decodedToken?._id)
+    if(!user) {
+      throw  new ApiError(401, "Invalid refesh token")
+    }
+  
+    if(incomingRefreshToken !== user?.refeshToken){
+      throw new ApiError(401, "Refesh token is expired or used")
+    }
+  
+  const options = {
+    httpOnly:  true,
+    secure: true
+  }
+  
+  const  {accessToken, newrefreshToken}=await generateAccessAndRefreshTokens(user._id)
+  
+  return res
+  .status(200)
+  .cookie("accessToken", accessToken, options)
+  .cookie("refeshToken", newrefeshToken, options)
+  .json(
+    new ApiResponse(
+      200, 
+      {accessToken, refeshToke: newrefreshToken},
+      "Access token refeshed"
+    )
+  )
+  } catch (error) {
+    throw new ApiError(401, error?.message || 
+      "Invalid refesh token"
+    )
+    
+  }
+
+})
+
 export { 
     registerUser,
      loginUser, 
-     logoutUser};
+     logoutUser,
+    refreshAcessToken
+  };

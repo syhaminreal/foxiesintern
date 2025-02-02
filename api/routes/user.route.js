@@ -1,4 +1,4 @@
-import { loginUser, logoutUser, registerUser } from '../controllers/user.controller.js'
+import { loginUser, logoutUser, registerUser, refreshAcessToken } from '../controllers/user.controller.js'
 import {verifyJWT} from "../middlewares/auth.middleware.js"
 
 
@@ -27,6 +27,10 @@ router.route("/login").post(loginUser)
 
 //securesroutes for logout
 router.route("/logout").post(verifyJWT, logoutUser)
+
+
+//path for the refesh token 
+router.route("refesh_token").post(refreshAcessToken)
 
 
 
