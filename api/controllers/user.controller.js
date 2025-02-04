@@ -225,9 +225,70 @@ const refreshAcessToken = asyncHandler(async (req, res) => {
 
 })
 
+
+const changeCurrentPassword =  asyncHandler(async(req,res) => {
+  const {oldPassword, newPassword}  =req.body //confirm passwor  
+  //if(newPassword === confirm password ) and send the resp
+  
+  
+ const user = await User.findById(req.user?._id)
+
+ const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
+
+ if(!isPasswordCorrect){
+  throw new ApiError(400, "Invalid old password")
+ }
+
+ user.password = newPassword
+  await user.save({validateBeforeSave: false})
+
+  return res.status(200)
+  .json(new ApiResponse(200,{} , "Password changed sucessfully"))
+
+})
+
+//get current user
+
+const getCurrentUser = asyncHandler(async(req, res) => {
+  return res
+  .status(200)
+  .json(200, req.user, "current user fetched sucesfully")
+})
+
+
+//chnage other aresa account deatils
+const updateAccoutnDetails = asyncHandler(async(req, res) => {
+  const {fullname, email} = req.body 
+
+  if(!fullname || !email){
+    throw new ApiError(400,  "All fields are required")
+  }
+
+ const user =  User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $set: {
+        //inconsentince can use any menthod
+        fullname,
+        email: email
+      }
+    },
+    {new: true}
+  ).select("-password")
+  return res
+  .status(200)
+  .json(new ApiResponse(200, user, "Accoutn details updated sucessfully" ))
+})
+
+//other end points for files update for the user files
+
+
 export { 
     registerUser,
      loginUser, 
      logoutUser,
-    refreshAcessToken
+    refreshAcessToken,
+    changeCurrentPassword,
+    getCurrentUser,
+    updateAccoutnDetails
   };
