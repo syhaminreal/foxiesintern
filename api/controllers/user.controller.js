@@ -4,7 +4,7 @@ import { User } from "../models/user.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
-
+import sendOTP from "../middlewares/nodemailer.middleware.js"
 // Function to generate access and refresh tokens for a user
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -342,6 +342,7 @@ const updateUserCoverImage  = asyncHandler(async(req,res)=>
     new ApiResponse(200, user, "Cover image updated successfully" )
   )
   })
+  //rest the password using nodemailer and sending the password link
 
 export { 
     registerUser,
@@ -352,5 +353,6 @@ export {
     getCurrentUser,
     updateAccoutnDetails,
     updateUserAvatar,
-    updateUserCoverImage 
+    updateUserCoverImage,
+   
   };
