@@ -1,5 +1,5 @@
-const cloudinary = require("cloudinary").v2;
-const fs = require("fs");
+import cloudinary from 'cloudinary';
+import fs from 'fs';
 
 // Configuration
 cloudinary.config({
@@ -9,7 +9,7 @@ cloudinary.config({
 });
 
 // Upload an image
-const uploadOnCloudinary = async (localFilePath) => {
+export const uploadOnCloudinary = async (localFilePath) => {
   try {
     if (!localFilePath) return null;
 
@@ -32,5 +32,3 @@ const uploadOnCloudinary = async (localFilePath) => {
     return null;
   }
 };
-
-module.exports = { uploadOnCloudinary };

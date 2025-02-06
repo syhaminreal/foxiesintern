@@ -1,40 +1,30 @@
-import { loginUser, logoutUser, registerUser, refreshAcessToken } from '../controllers/user.controller.js'
-import {verifyJWT} from "../middlewares/auth.middleware.js"
+import express from "express";
+import { loginUser, logoutUser, registerUser, refreshAccessToken, changeCurrentPassword } from "../controllers/user.controller.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
+import multer from "multer"; // ✅ Import multer for file uploads
 
+const router = express.Router(); // ✅ Correct way to initialize the router
 
-const router = require('express')
-
-const  router  = Router()
-
+// Configure multer for file uploads
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.route("/register").post(
-    uploads.fileds([
+    upload.fields([
         {
-            name: "avtar",
-            maxCount:1
+            name: "avatar", // ✅ Fixed typo ("avtar" → "avatar")
+            maxCount: 1,
         },
         {
             name: "coverImage",
-            maxCount: 1
-        }
-
+            maxCount: 1,
+        },
     ]),
     registerUser
-)
+);
 
-// router.route("/login").post(loginUser)
-router.route("/login").post(loginUser)
+router.route("/login").post(loginUser);
+router.route("/logout").post(verifyJWT, logoutUser);
+router.route("/refresh_token").post(refreshAccessToken); // ✅ Fixed spelling
+router.route("/changeCurrentPassword").post(verifyJWT, changeCurrentPassword);
 
-//securesroutes for logout
-router.route("/logout").post(verifyJWT, logoutUser)
-
-
-//path for the refesh token 
-router.route("refesh_token").post(refreshAcessToken)
-
-//path to change the password
-router.route("/changeCurrentPassword").post(verifyJWT, changeCurrentPassword)
-
-
-export default router
-
+export default router;

@@ -1,6 +1,7 @@
-require("dotenv").config();
-const { model } = require("mongoose");
-const nodemailer = require("nodemailer");
+import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
+
+dotenv.config();
 
 // Function to generate a 6-digit OTP
 const generateOTP = () => {
@@ -47,5 +48,4 @@ sendOTP("recipient@example.com").then((otp) => {
     }
 });
 
-
-export default {sendOTP}
+//export { sendOTP };
