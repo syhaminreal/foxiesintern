@@ -32,7 +32,8 @@ router.route("/logout").post(verifyJWT, logoutUser)
 //path for the refesh token 
 router.route("refesh_token").post(refreshAcessToken)
 
-
+//path to change the password
+router.route("/changeCurrentPassword").post(verifyJWT, changeCurrentPassword)
 
 
 export default router
