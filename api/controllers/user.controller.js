@@ -84,6 +84,10 @@ const registerUser = asyncHandler(async (req, res) => {
   // Removing sensitive fields directly while creating the user
   const { password: _, refreshToken: __, ...createdUser } = user.toObject();
 
+  if(!createUser){
+    throw new ApiError(500, "Something went wrong while registering the user")
+  }
+
   return res.status(201).json(new ApiResponse(201, createdUser, "User registered successfully"));
 });
 
