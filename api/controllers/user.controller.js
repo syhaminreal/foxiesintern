@@ -28,6 +28,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 
 // User registration process
 const registerUser = asyncHandler(async (req, res) => {
+
   // Steps for registering a user:
   // 1. Get user details from frontend
   // 2. Validate required fields (not empty and unique)

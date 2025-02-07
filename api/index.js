@@ -18,6 +18,12 @@ app.get("/", (req, res) => {
   res.send("Hello from Node API Server Listening ");
 });
 
+// //routes import
+// import userRouter from './routes/user.route.js'
+
+// //routes declaration
+// app.use("/api/v1/users", userRouter)
+
 mongoose
   .connect(
     "mongodb+srv://shyam9876yadav:sam123@cluster0.rvvuw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
