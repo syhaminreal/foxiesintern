@@ -74,7 +74,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // Creating the user in the database
   const user = await User.create({
     fullname,
-    avatar: avatar.url,
+    avatar: avatar?.url || "",
     coverImage: coverImage?.url || "",
     email,
     password,
@@ -88,7 +88,8 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Something went wrong while registering the user")
   }
 
-  return res.status(201).json(new ApiResponse(201, createdUser, "User registered successfully"));
+  return res.status(201).json(
+    new ApiResponse(201, createdUser, "User registered successfully"));
 });
 
 
