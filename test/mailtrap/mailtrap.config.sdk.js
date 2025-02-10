@@ -1,23 +1,27 @@
-import  { MailtrapClient } from "mailtrap";
-import dotenv  from "dotenv";
+import { MailtrapClient } from "mailtrap";
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
-export const MailtrapClient = new MailtrapClient({
-  token: process.env.MAILTRAP_ENDPOINT, endpoint: process.env.MAILTRAP_TOKEN
+// Initialize MailtrapClient with correct environment variables
+export const mailtrapClient = new MailtrapClient({
+  token: process.env.MAILTRAP_TOKEN, // Corrected environment variable name
+  endpoint: process.env.MAILTRAP_ENDPOINT, // Corrected environment variable name
 });
 
 export const sender = {
   email: "hello@demomailtrap.com",
   name: "sam ",
 };
+
+// Example usage of the client
 // const recipients = [
 //   {
 //     email: "shyaminreallife@gmail.com",
 //   }
 // ];
 
-// client
+// mailtrapClient
 //   .send({
 //     from: sender,
 //     to: recipients,
