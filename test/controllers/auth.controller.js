@@ -1,7 +1,7 @@
 import { User } from '../models/user.model.js';
 import bcryptjs from "bcryptjs";
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js"; 
-import { sendPasswordResetEmail, sendVerificationEmail, sendWelcomeEmail } from '../mailtrap/emails.js';
+import { sendPasswordResetEmail, sendResetSuccessEmail, sendVerificationEmail, sendWelcomeEmail } from '../mailtrap/emails.js';
 import crypto from "crypto"
 //sign up
 export const signup = async (req, res) => {
@@ -144,10 +144,65 @@ user.resetPasswordExpiresAt = resetTokenExpiresAt
 await user.save()
 
 //send email 
-await sendPasswordResetEmail(user.email, '')
+await sendPasswordResetEmail(user.email, `${process.env.CLIENT_URL}/reset-password/reset-passowrd/${resetToken}`)
 
   }catch(error){
+    console.log("Error in lresting email",error)
+    res.status(400).json({ sucess: false,  message: error.message})
 
+
+  }
+
+}
+
+//reset password
+export const resetPassword =async (req, res) => {
+  try{
+
+const  {token} = req.params
+const{password} = req.body
+
+const user =await User.findOne({
+  resetPasswordToken: token,
+  resetPasswordExpiresAt: { $gt: Date.now()},
+})
+if(!user){
+  return res.status(400).json({sucess:false, message: "Invalid or expired reset token"})
+}
+
+//update password
+const hashedPassword = await bcryptjs.hash(password,10)
+user.password = hashedPassword
+user.resetPasswordExpiresAt = undefined
+await user.save()
+
+
+await sendResetSuccessEmail(user.email)
+
+res.status(200).json({sucess: true, message: "Password reset sucessful"})
+  }catch(error){
+    console.log("Error in resetPassword", error)
+    res.status(400).json({sucess: false, message: error.message})
+
+  }
+}
+
+
+//check auth
+export const checkAuth = async(req, res) => {
+  try {
+    const user = await User.findById(req.userId).select("-password")
+    if(!user){
+      return res.status(400).json({ sucess: false, message: "User not found"})
+    }
+
+    res.status(200).json({ sucess: true, user})
+  } catch (error) {
+    console.log("Error in checkAuth", error)
+    res.status(400).json({sucess: false, message: error.message})
+
+
+    
   }
 
 }
