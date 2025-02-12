@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const mongooseAggregatePaginate = require("mongoose-aggregate-paginate-v2");
+import mongoose from "mongoose";
+import  mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const VideoSchema = new mongoose.Schema(
   {
