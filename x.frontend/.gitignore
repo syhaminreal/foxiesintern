@@ -1,0 +1,46 @@
+# Node modules
+node_modules/
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+debug.log*
+.vscode/
+
+# Dependency directories
+.pnp
+.pnp.js
+
+# Editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build output
+.out/
+.cache/
+.eslintcache
+.husky/_
+
+# Testing
+coverage/
+*.log
+
+# macOS system files
+*.DS_Store
+
+# Optional: Ignore build artifacts if using Docker
+docker-compose.override.yml
