@@ -1,6 +1,6 @@
 import express from 'express';
-import Product from "./models/product.model.js"; // Assuming default export in the model
-import { getProducts, getProduct, createProduct, updateProduct, deleteProduct } from './controllers/product.controller.js'; // Named imports
+import Product from "../models/product.model.js"; // Assuming default export in the model
+import { getProducts, getProduct, createProduct, updateProduct, deleteProduct } from '../controllers/product.controller.js'; // Named imports
 
 const router = express.Router(); // Define the router
 
