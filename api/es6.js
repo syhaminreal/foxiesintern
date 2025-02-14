@@ -22,3 +22,12 @@
 // //fat arrow funtion with one parameter
 // // var  b = (params )=> {}
 // //b(12)
+
+
+//implict return meaning it will return with out and problems and desnot need key word retun
+//var g = () =>12
+//value call
+//consle.log(g())
+
+//templet literals i.e `` back tick
+//
