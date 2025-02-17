@@ -3,6 +3,7 @@ import { loginUser, logoutUser, registerUser, refreshAccessToken, changeCurrentP
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import multer from "multer"; // ✅ Import multer for file uploads
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const router = express.Router(); // ✅ Correct way to initialize the router
 

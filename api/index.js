@@ -18,6 +18,10 @@ app.get("/", (req, res) => {
   res.send("Hello from Node API Server Listening ");
 });
 
+
+import userRouter from './routes/user.route.js'
+app.use("/api/users", userRouter);
+
 // //routes import
 // import userRouter from './routes/user.route.js'
 
