@@ -30,77 +30,71 @@ const generateAccessAndRefreshTokens = async (userId) => {
   }
 };
 
+// User registration process
 const registerUser = asyncHandler(async (req, res) => {
-  res.status(200).json({
-    message: "ok",
+
+  // Steps for registering a user:
+  // 1. Get user details from frontend
+  // 2. Validate required fields (not empty and unique)
+  // 3. Check if user already exists (username and email)
+  // 4. Handle cover image and avatar if available
+  // 5. Upload them to Cloudinary
+  // 6. Check if Multer has uploaded them
+  // 7. Create a user object and insert it into the database
+  // 8. Remove password and refresh token from the response
+  // 9. Return the response
+
+  const { fullname, email, username, password } = req.body;
+  console.log("Registering user with email:", email);
+
+  if ([fullname, email, username, password].some((field) => !field?.trim())) {
+    throw new ApiError(400, "All fields are required");
+  }
+
+  // Checking if a user with the given email or username already exists
+  const existedUser = await User.findOne({
+    $or: [{ username }, { email }],
   });
+
+  if (existedUser) {
+    throw new ApiError(409, "User with this email or username already exists");
+  }
+
+  // Handling avatar and cover image uploads
+  const avatarLocalPath = req.files?.avatar?.[0]?.path;
+  const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
+
+  if (!avatarLocalPath) {
+    throw new ApiError(400, "Avatar is required");
+  }
+
+  const avatar = await uploadOnCloudinary(avatarLocalPath);
+  const coverImage = coverImageLocalPath ? await uploadOnCloudinary(coverImageLocalPath) : null;
+
+  if (!avatar) {
+    throw new ApiError(400, "Failed to upload avatar to Cloudinary");
+  }
+
+  // Creating the user in the database
+  const user = await User.create({
+    fullname,
+    avatar: avatar?.url || "",
+    coverImage: coverImage?.url || "",
+    email,
+    password,
+    username: username.toLowerCase(),
+  });
+
+  // Removing sensitive fields directly while creating the user
+  const { password: _, refreshToken: __, ...createdUser } = user.toObject();
+
+  if(!createUser){
+    throw new ApiError(500, "Something went wrong while registering the user")
+  }
+
+  return res.status(201).json(
+    new ApiResponse(201, createdUser, "User registered successfully"));
 });
-
-// // User registration process
-// const registerUser = asyncHandler(async (req, res) => {
-
-//   // Steps for registering a user:
-//   // 1. Get user details from frontend
-//   // 2. Validate required fields (not empty and unique)
-//   // 3. Check if user already exists (username and email)
-//   // 4. Handle cover image and avatar if available
-//   // 5. Upload them to Cloudinary
-//   // 6. Check if Multer has uploaded them
-//   // 7. Create a user object and insert it into the database
-//   // 8. Remove password and refresh token from the response
-//   // 9. Return the response
-
-//   const { fullname, email, username, password } = req.body;
-//   console.log("Registering user with email:", email);
-
-//   if ([fullname, email, username, password].some((field) => !field?.trim())) {
-//     throw new ApiError(400, "All fields are required");
-//   }
-
-//   // Checking if a user with the given email or username already exists
-//   const existedUser = await User.findOne({
-//     $or: [{ username }, { email }],
-//   });
-
-//   if (existedUser) {
-//     throw new ApiError(409, "User with this email or username already exists");
-//   }
-
-//   // Handling avatar and cover image uploads
-//   const avatarLocalPath = req.files?.avatar?.[0]?.path;
-//   const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
-
-//   if (!avatarLocalPath) {
-//     throw new ApiError(400, "Avatar is required");
-//   }
-
-//   const avatar = await uploadOnCloudinary(avatarLocalPath);
-//   const coverImage = coverImageLocalPath ? await uploadOnCloudinary(coverImageLocalPath) : null;
-
-//   if (!avatar) {
-//     throw new ApiError(400, "Failed to upload avatar to Cloudinary");
-//   }
-
-//   // Creating the user in the database
-//   const user = await User.create({
-//     fullname,
-//     avatar: avatar?.url || "",
-//     coverImage: coverImage?.url || "",
-//     email,
-//     password,
-//     username: username.toLowerCase(),
-//   });
-
-//   // Removing sensitive fields directly while creating the user
-//   const { password: _, refreshToken: __, ...createdUser } = user.toObject();
-
-//   if(!createUser){
-//     throw new ApiError(500, "Something went wrong while registering the user")
-//   }
-
-//   return res.status(201).json(
-//     new ApiResponse(201, createdUser, "User registered successfully"));
-// });
 
 // User login process
 const loginUser = asyncHandler(async (req, res) => {

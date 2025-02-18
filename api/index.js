@@ -5,6 +5,8 @@ import productRoute from "./routes/product.route.js";
 import cors from "cors";
 import { app } from "./app.js"; // Importing app.js
 
+// import userRouter from './routes/user.route.js'
+
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -19,8 +21,7 @@ app.get("/", (req, res) => {
 });
 
 
-import userRouter from './routes/user.route.js'
-app.use("/api/users", userRouter);
+// app.use("/api/users", userRouter);
 
 // //routes import
 // import userRouter from './routes/user.route.js'
