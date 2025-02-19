@@ -1,25 +1,34 @@
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
-const { LowSync } = require("lowdb");
-const { JSONFileSync } = require("lowdb/node");
-
-const PORT = process.env.PORT || 4000;
-
-// Setup LowDB
-const adapter = new JSONFileSync("db.json");
-const db = new LowSync(adapter);
-
-// Set default values if db.json is empty
-db.read();
-db.data ||= { books: [] };
-db.write();
 
 const app = express();
-app.db = db;
 
-app.use(cors());
-app.use(express.json());
-app.use(morgan("dev"));
+// Define Swagger options
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "My API",
+      version: "1.0.0",
+      description: "A simple API documentation",
+    },
+    servers: [
+      {
+        url: "http://localhost:5000", // Change based on your API URL
+      },
+    ],
+  },
+  apis: ["./routes/*.js"], // Specify the path to your API route files
+};
 
-app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));
+// Generate Swagger documentation
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+
+// Serve Swagger UI
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+app.listen(5000, () => {
+  console.log("Server running at http://localhost:5000");
+  console.log("Swagger UI available at http://localhost:5000/api-docs");
+});
