@@ -1,42 +1,25 @@
-require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
-const swaggerUi = require("swagger-ui-express");
-const swaggerJsdoc = require("swagger-jsdoc");
+const morgan = require("morgan");
+const { LowSync } = require("lowdb");
+const { JSONFileSync } = require("lowdb/node");
+
+const PORT = process.env.PORT || 4000;
+
+// Setup LowDB
+const adapter = new JSONFileSync("db.json");
+const db = new LowSync(adapter);
+
+// Set default values if db.json is empty
+db.read();
+db.data ||= { books: [] };
+db.write();
 
 const app = express();
+app.db = db;
 
-// Middleware
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
+app.use(morgan("dev"));
 
-// MongoDB Connection (Updated)
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
-
-// Swagger Configuration
-const swaggerOptions = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "User Authentication API",
-      version: "1.0.0",
-      description: "API for user registration, login, and profile management",
-    },
-    servers: [{ url: "http://localhost:5000" }],
-  },
-  apis: ["./routes/user.routes.js"], // Ensure correct path
-};
-
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
-// Import Routes
-const userRoutes = require("./routes/user.routes"); // Ensure file exists
-app.use("/api/users", userRoutes);
-
-// Start Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));
