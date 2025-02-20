@@ -1,34 +1,22 @@
-const swaggerJsdoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
+require("dotenv").config();
 const express = require("express");
+const connectDB = require("./dbconnect");
+const router = require("./routes");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json");
 
 const app = express();
 
-// Define Swagger options
-const swaggerOptions = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "My API",
-      version: "1.0.0",
-      description: "A simple API documentation",
-    },
-    servers: [
-      {
-        url: "http://localhost:5000", // Change based on your API URL
-      },
-    ],
-  },
-  apis: ["./routes/*.js"], // Specify the path to your API route files
-};
+// Connect to MongoDB once at the start
+connectDB();
 
-// Generate Swagger documentation
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use(express.json());
+app.use(router);
 
-// Serve Swagger UI
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.listen(5000, () => {
-  console.log("Server running at http://localhost:5000");
-  console.log("Swagger UI available at http://localhost:5000/api-docs");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Swagger UI available at http://localhost:${PORT}/api-docs`);
 });
