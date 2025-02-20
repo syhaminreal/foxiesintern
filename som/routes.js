@@ -16,4 +16,10 @@ router.post("/userInfo", async (req, res) => {
   }
 });
 
+
+router.get('/user', (req, res) => {
+    res.status(200).json({
+        message: "Recived user"
+    })
+})
 module.exports = router;
