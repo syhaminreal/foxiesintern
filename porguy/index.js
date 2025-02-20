@@ -1,26 +1,14 @@
-const express = require('express')
-const router= require("./routes")
-const app = express()
+const express = require('express');
+const router = require('./routes');
 
+const app = express();
 
+// ✅ Add this to parse JSON request bodies
+app.use(express.json());
 
-app.use('/api', router)
-// app.use(express.json())
+app.use('/api', router);
 
-
-// app.get('/', (req, res) =>{
-//     res.send("Hello world")
-// })
-
-// app.get('/sam', (req, res) =>{
-//     res.send("Hello from shyam")
-// })
-
-// app.post('/test', (req, res) => {
-//     const {username} = req.body
-//     res.send(`Hello ${username}`)
-// })
-app.listen(3000, () => {
-    console.log('Server listening on port 3000')
-
-})
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+});
