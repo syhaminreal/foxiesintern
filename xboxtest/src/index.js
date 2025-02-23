@@ -1,50 +1,88 @@
-import express from "express";
-import http from "http";
-import { Server } from "socket.io";
-import cors from "cors";
-import dotenv from "dotenv";
-import path from "path";
+// require('dotenv').config({path: './env'})
+import dotenv from "../env"
+import {connectDB} from "./db/index.js"
 
-dotenv.config();
 
-const app = express();
-const port = process.env.PORT || 8000;
+dotenv.config({
+    path : './env'
+})
 
-// Create HTTP server
-const server = http.createServer(app);
+connectDB()
 
-// Initialize Socket.IO
-const io = new Server(server, {
-  cors: {
-    origin: "*", // Allow all origins (update as needed)
-    methods: ["GET", "POST"],
-  },
-});
 
-// Middleware
-app.use(express.json());
-app.use(cors());
 
-// Serve static HTML file
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
 
-// Handle Socket.IO connections
-io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
 
-  socket.on("message", (msg) => {
-    console.log("Message received:", msg);
-    io.emit("message", msg); // Broadcast message to all clients
-  });
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-  });
-});
 
-// Start the server
-server.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`);
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import mongoose from "mongoose";
+// import express from "express";
+
+// const app = express();
+
+// (async () => {
+//     try {
+//         await mongoose.connect(`${process.env.MONGODB_URI}`, {
+//             useNewUrlParser: true,
+//             useUnifiedTopology: true,
+//         });
+
+//         console.log("Database connected successfully");
+
+//         app.on("error", (error) => {
+//             console.error("Express Error:", error);
+//             throw error;
+//         });
+
+//         app.listen(process.env.PORT, () => {
+//             console.log(`App is listening on port ${process.env.PORT}`);
+//         });
+
+//     } catch (error) {
+//         console.error("Database Connection Error:", error);
+//         throw error; // Corrected the typo (was `throw err`)
+//     }
+// })();
