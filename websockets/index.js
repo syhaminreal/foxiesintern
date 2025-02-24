@@ -10,10 +10,31 @@ const server = http.createServer(app);
 
 const io = new Server(server)
 
+
 // Handle socket.io connection
 io.on("connection", (socket) => {
     console.log("A new user joined or connected");
+
+    socket.on("user-message", (message) => {
+        console.log("A new user message:", message);
+        io.emit("message", message); // Broadcast message to all clients
+    });
+
+    socket.on("disconnect", () => {
+        console.log("A user disconnected");
+    });
 });
+
+
+// // Handle socket.io connection
+// io.on("connection", (socket) => {
+//     // console.log("A new user joined or connected");
+//     socket.on("user-message", (message) =>{
+//         console.log(" A new user message", message)
+//     })
+// });
+
+
 
 // Corrected static files path
 app.use(express.static(path.join(__dirname, "public")));
