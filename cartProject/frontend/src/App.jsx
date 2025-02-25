@@ -1,9 +1,11 @@
-
+import CustomNavbar from "./pages/NavBar"
 
 function App() {
  
   return (
-    <h1> Helloe wrold</h1>
+   <>
+   <CustomNavbar/>
+   </>
   )
    
 
