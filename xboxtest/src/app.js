@@ -28,7 +28,7 @@ import userRouter from "./routes/user.routes.js"
 //routes declartion
 app.use("/api/v1/users", userRouter)
 
-// http:localhost:8000/v1/users/register
+//http:localhost:8000/v1/users/register
 
 
 //define the frontend ports or origin 
