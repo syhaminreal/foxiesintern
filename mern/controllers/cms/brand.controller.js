@@ -1,4 +1,4 @@
-const { showError } = require("../../lib");
+const { showError, validationError } = require("../../lib");
 const { Brand } = require("../../models");
 
 class BrandsController {
@@ -22,24 +22,8 @@ class BrandsController {
             });
 
         } catch (err) {
-            let message = {};
-
-            if (err.code === 11000) {  // Check for duplicate brand name error
-                message = {
-                    name: "Brand name is already in use",
-                };
-            } else if (err.errors) {  // Handle validation errors
-                for (let k in err.errors) {
-                    message[k] = err.errors[k].message;
-                }
-            } else {
-                return showError(err, next);  // Pass unknown errors to showError
-            }
-
-            next({
-                message,
-                status: 422,
-            });
+            validationError(err, next)
+           
         }
     };
 
@@ -78,8 +62,8 @@ class BrandsController {
                     status: 404,
                 });
             }
-        } catch (error) {
-            showError(error, next);
+        } catch (err) {
+            validationError(err, next)
         }
     };
 

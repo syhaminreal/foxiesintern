@@ -1,4 +1,4 @@
-const { showError } = require("../../lib");
+const { showError, validationError } = require("../../lib");
 const { Category } = require("../../models");
 
 class CategoriesController {
@@ -22,24 +22,7 @@ class CategoriesController {
             });
 
         } catch (err) {
-            let message = {};
-
-            if (err.code === 11000) {  // Check for duplicate category name error
-                message = {
-                    name: "Category name is already in use",
-                };
-            } else if (err.errors) {  // Handle validation errors
-                for (let k in err.errors) {
-                    message[k] = err.errors[k].message;
-                }
-            } else {
-                return showError(err, next);  // Pass unknown errors to showError
-            }
-
-            next({
-                message,
-                status: 422,
-            });
+            validationError(err, next)
         }
     };
 
@@ -79,24 +62,7 @@ class CategoriesController {
                 });
             }
         } catch (error) {
-            let message = {};
-
-            if (err.code === 11000) {  // Check for duplicate category name error
-                message = {
-                    name: "Category name is already in use",
-                };
-            } else if (err.errors) {  // Handle validation errors
-                for (let k in err.errors) {
-                    message[k] = err.errors[k].message;
-                }
-            } else {
-                return showError(err, next);  // Pass unknown errors to showError
-            }
-
-            next({
-                message,
-                status: 422,
-            });
+            validationError(err, next)
         }
     };
 
