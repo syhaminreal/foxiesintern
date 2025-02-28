@@ -1,12 +1,11 @@
 const { showError } = require("../../lib");
 const { User } = require("../../models");
-const bcrypt = require('bcryptjs');
 
-class StaffsController {
+class CustomersController {
     index = async (req, res, next) => {
         try {
-            const staffs = await User.find({ type: 'Staff' });
-            res.json(staffs);
+            const customers = await User.find({ type: 'Customer' });
+            res.json(customers);
         } catch (error) {
             showError(error, next);
         }
@@ -25,10 +24,10 @@ class StaffsController {
 
             const hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
-            await User.create({ name, email, password: hash, phone, address, status, type: 'Staff' });
+            await User.create({ name, email, password: hash, phone, address, status, type: 'Customer' });
 
             res.status(201).json({
-                success: "Staff created.",
+                success: "Customer created.",
             });
 
         } catch (err) {
@@ -55,13 +54,13 @@ class StaffsController {
 
     show = async (req, res, next) => {
         try {
-            const staff = await User.findById(req.params.id);
+            const customer = await User.findById(req.params.id);
 
-            if (staff) {
-                res.json(staff);
+            if (customer) {
+                res.json(customer);
             } else {
                 next({
-                    message: "Staff not found",
+                    message: "Customer not found",
                     status: 404,
                 });
             }
@@ -74,17 +73,17 @@ class StaffsController {
         try {
             const { name, phone, address, status } = req.body;
 
-            const staff = await User.findByIdAndUpdate(
+            const customer = await User.findByIdAndUpdate(
                 req.params.id,
                 { name, phone, address, status },
                 { new: true }
             );
 
-            if (staff) {
-                res.json({ success: "Staff Updated." });
+            if (customer) {
+                res.json({ success: "Customer Updated." });
             } else {
                 next({
-                    message: "Staff not found",
+                    message: "Customer not found",
                     status: 404,
                 });
             }
@@ -95,13 +94,13 @@ class StaffsController {
 
     destroy = async (req, res, next) => {
         try {
-            const staff = await User.findByIdAndDelete(req.params.id);
+            const customer = await User.findByIdAndDelete(req.params.id);
 
-            if (staff) {
-                res.json({ success: "Staff removed." });
+            if (customer) {
+                res.json({ success: "Customer removed." });
             } else {
                 next({
-                    message: "Staff not found",
+                    message: "Customer not found",
                     status: 404,
                 });
             }
@@ -111,4 +110,4 @@ class StaffsController {
     };
 }
 
-module.exports = new StaffsController();
+module.exports = new CustomersController();

@@ -1,12 +1,11 @@
 const { showError } = require("../../lib");
-const { User } = require("../../models");
-const bcrypt = require('bcryptjs');
+const { Brand } = require("../../models");
 
-class StaffsController {
+class BrandsController {
     index = async (req, res, next) => {
         try {
-            const staffs = await User.find({ type: 'Staff' });
-            res.json(staffs);
+            const brands = await Brand.find();
+            res.json(brands);
         } catch (error) {
             showError(error, next);
         }
@@ -14,29 +13,20 @@ class StaffsController {
 
     store = async (req, res, next) => {
         try {
-            const { name, email, password, confirm_password, phone, address, status } = req.body;
+            const { name, status } = req.body;
 
-            if (password !== confirm_password) {
-                return next({
-                    message: "Password not confirmed",
-                    status: 422,
-                });
-            }
-
-            const hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-
-            await User.create({ name, email, password: hash, phone, address, status, type: 'Staff' });
+            await Brand.create({ name, status });
 
             res.status(201).json({
-                success: "Staff created.",
+                success: "Brand created.",
             });
 
         } catch (err) {
             let message = {};
 
-            if (err.code === 11000) {  // Check for duplicate email error
+            if (err.code === 11000) {  // Check for duplicate brand name error
                 message = {
-                    email: "Email is already in use",
+                    name: "Brand name is already in use",
                 };
             } else if (err.errors) {  // Handle validation errors
                 for (let k in err.errors) {
@@ -55,13 +45,13 @@ class StaffsController {
 
     show = async (req, res, next) => {
         try {
-            const staff = await User.findById(req.params.id);
+            const brand = await Brand.findById(req.params.id);
 
-            if (staff) {
-                res.json(staff);
+            if (brand) {
+                res.json(brand);
             } else {
                 next({
-                    message: "Staff not found",
+                    message: "Brand not found",
                     status: 404,
                 });
             }
@@ -72,19 +62,19 @@ class StaffsController {
 
     update = async (req, res, next) => {
         try {
-            const { name, phone, address, status } = req.body;
+            const { name, status } = req.body;
 
-            const staff = await User.findByIdAndUpdate(
+            const brand = await Brand.findByIdAndUpdate(
                 req.params.id,
-                { name, phone, address, status },
+                { name, status },
                 { new: true }
             );
 
-            if (staff) {
-                res.json({ success: "Staff Updated." });
+            if (brand) {
+                res.json({ success: "Brand Updated." });
             } else {
                 next({
-                    message: "Staff not found",
+                    message: "Brand not found",
                     status: 404,
                 });
             }
@@ -95,13 +85,13 @@ class StaffsController {
 
     destroy = async (req, res, next) => {
         try {
-            const staff = await User.findByIdAndDelete(req.params.id);
+            const brand = await Brand.findByIdAndDelete(req.params.id);
 
-            if (staff) {
-                res.json({ success: "Staff removed." });
+            if (brand) {
+                res.json({ success: "Brand removed." });
             } else {
                 next({
-                    message: "Staff not found",
+                    message: "Brand not found",
                     status: 404,
                 });
             }
@@ -111,4 +101,4 @@ class StaffsController {
     };
 }
 
-module.exports = new StaffsController();
+module.exports = new BrandsController();
