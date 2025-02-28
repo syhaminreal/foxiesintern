@@ -85,14 +85,13 @@ const validationError = (error, next) => {
         status: 422,
     });
 };
-
 const uploadFile = (mimeList = []) => multer({
     fileFilter: (req, file, cb) => {
         if (mimeList.length > 0) {
             if (mimeList.includes(file.mimetype)) {
                 cb(null, true);
             } else {
-                cb(`File type not supported for the file: ${file.originalname}`, false);
+                cb(new Error(`File type not supported for the file: ${file.originalname}`), false);
             }
         } else {
             cb(null, true);
@@ -108,5 +107,8 @@ const uploadFile = (mimeList = []) => multer({
         }
     })
 });
+
+module.exports = uploadFile;
+
 
 module.exports = { showError, auth, cmsUser, AdminUser, validationError, uploadFile };
