@@ -91,6 +91,10 @@ class StaffsController {
         } catch (error) {
             showError(error, next);
         }
+        next({
+            message,
+            status:422
+        })
     };
 
     destroy = async (req, res, next) => {
