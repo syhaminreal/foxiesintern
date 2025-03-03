@@ -1,44 +1,6 @@
-import express from "express";
-import mongoose from "mongoose";
-import Product from "./models/product.model.js";
-import productRoute from "./routes/product.route.js";
-import cors from "cors";
-import { app } from "./app.js"; // Importing app.js
+var http = require('http')
 
-// import userRouter from './routes/user.route.js'
-
-// middleware
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-
-app.use(cors());
-
-// routes
-app.use("/api/products", productRoute);
-
-app.get("/", (req, res) => {
-  res.send("Hello from Node API Server Listening ");
-});
-
-
-// app.use("/api/users", userRouter);
-
-// //routes import
-// import userRouter from './routes/user.route.js'
-
-// //routes declaration
-// app.use("/api/v1/users", userRouter)
-
-mongoose
-  .connect(
-    "mongodb+srv://shyam9876yadav:sam123@cluster0.rvvuw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-  )
-  .then(() => {
-    console.log("Connected to database!");
-    app.listen(3000, () => {
-      console.log("Server is running on port 3000");
-    });
-  })
-  .catch(() => {
-    console.log("Connection failed!");
-  });
+http.createServer(function  (req, res){
+    res.writeHead(200, {'Content-Type': 'text/plain'})
+    res.end("Hello to all my followers")
+}).listen(8080)
