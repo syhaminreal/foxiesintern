@@ -1,6 +1,6 @@
 const express = require('express');
-const { ProductController } = require("../../controllers");
-const { uploadFile } = require("../../lib");
+const { ProductController } = require("../controllers/product.controller");
+const { uploadFile } = require("../lib");
 
 const router = express.Router();
 
