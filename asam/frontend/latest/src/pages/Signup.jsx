@@ -1,0 +1,162 @@
+import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
+const SignUpPage = () => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    agreeToTerms: false
+  });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    
+    // Basic validation
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    
+    if (!formData.agreeToTerms) {
+      setError('You must agree to the terms and conditions');
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    try {
+      // In a real app, this would be an API call
+      // Simulate API call with setTimeout
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Success - navigate to login
+      navigate('/login');
+    } catch (err) {
+      setError(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
+      <Col md={8} lg={6}>
+        <Card className="shadow">
+          <Card.Body className="p-5">
+            <div className="text-center mb-4">
+              <h2 className="fw-bold">Create an Account</h2>
+              <p className="text-muted">Sign up to start using Sales Analytics</p>
+            </div>
+            
+            {error && <Alert variant="danger">{error}</Alert>}
+            
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>Full Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="fullName"
+                  placeholder="John Doe"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              
+              <Form.Group className="mb-3">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  placeholder="name@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+              
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      name="password"
+                      placeholder="Create password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                      minLength={8}
+                    />
+                    <Form.Text className="text-muted">
+                      Must be at least 8 characters
+                    </Form.Text>
+                  </Form.Group>
+                </Col>
+                
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      name="confirmPassword"
+                      placeholder="Confirm password"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      required
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              
+              <Form.Group className="mb-4">
+                <Form.Check
+                  type="checkbox"
+                  id="terms"
+                  name="agreeToTerms"
+                  checked={formData.agreeToTerms}
+                  onChange={handleChange}
+                  label={
+                    <span>I agree to the <a href="/terms" className="text-decoration-none">Terms of Service</a> and <a href="/privacy" className="text-decoration-none">Privacy Policy</a></span>
+                  }
+                  required
+                />
+              </Form.Group>
+              
+              <Button 
+                variant="primary" 
+                type="submit" 
+                className="w-100 py-2"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Creating Account...' : 'Create Account'}
+              </Button>
+              
+              <div className="text-center mt-4">
+                <p>Already have an account? <a href="/auth" className="text-decoration-none">Sign in</a></p>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Container>
+  );
+};
+
+export default SignUpPage;
