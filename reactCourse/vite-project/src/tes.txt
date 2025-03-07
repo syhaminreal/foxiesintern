@@ -1,0 +1,51 @@
+## **React Hooks Theory**  
+
+### **What Are Hooks?**  
+Hooks are functions that allow functional components in React to manage state, handle side effects, and optimize performance without using class components. Introduced in React 16.8, they simplify component logic and improve reusability.  
+
+### **Key Principles of Hooks**  
+1. **Hooks Only Work in Functional Components**  
+   - Hooks cannot be used inside class components. They are meant to bring the features of class components (like state and lifecycle methods) to functional components.  
+
+2. **Hooks Must Be Called at the Top Level**  
+   - Hooks should not be used inside loops, conditions, or nested functions. This ensures hooks run in the same order every time a component renders.  
+
+3. **Hooks Must Be Called in React Functions**  
+   - Hooks should only be called inside React function components or custom hooks, not in regular JavaScript functions.  
+
+---
+
+## **Types of React Hooks**  
+
+### **1. State Management Hooks**  
+- **`useState`**: Allows components to have local state. It returns the current state value and a function to update it.  
+
+### **2. Side Effect Handling Hooks**  
+- **`useEffect`**: Handles side effects such as data fetching, subscriptions, or manually changing the DOM. It runs after the component renders and can be controlled using dependencies.  
+
+### **3. Context and Reference Hooks**  
+- **`useContext`**: Provides access to values from React's Context API without using `Consumer` components.  
+- **`useRef`**: Stores references to DOM elements or mutable values without causing re-renders.  
+
+### **4. Performance Optimization Hooks**  
+- **`useMemo`**: Caches expensive computations and prevents unnecessary recalculations during re-renders.  
+- **`useCallback`**: Returns a memoized function to avoid re-creating functions on every render, improving performance.  
+
+### **5. Advanced State Management Hooks**  
+- **`useReducer`**: An alternative to `useState` for managing complex state logic using a reducer function.  
+
+### **6. Custom Hooks**  
+- Custom hooks allow developers to extract and reuse logic across multiple components. A custom hook is simply a JavaScript function that uses other hooks.  
+
+---
+
+## **Benefits of Hooks**  
+✅ **Simplifies Code** – Eliminates the need for class components and makes logic more readable.  
+✅ **Encourages Reusability** – Custom hooks allow logic sharing across components.  
+✅ **Improves Performance** – Hooks like `useMemo` and `useCallback` prevent unnecessary computations.  
+✅ **Better Code Organization** – Hooks keep related logic together instead of scattering it across lifecycle methods in class components.  
+
+---
+
+## **Conclusion**  
+React Hooks revolutionized functional components by bringing state management, side effects handling, and optimization techniques without requiring class components. They make React development more efficient, scalable, and maintainable.
