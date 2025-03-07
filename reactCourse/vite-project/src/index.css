@@ -1,3 +1,4 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/*  Hooks are functions introduced in React 16.8 that allow you to use state and lifecycle features in functional components. Before hooks, state and lifecycle methods were only available in class components.*/
