@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { DashboardLayout } from "@/components/dashboard-layout"
-import { SalesOverview } from "@/components/sales-overview"
-import { SalesChart } from "@/components/sales-chart"
-import { TopProducts } from "@/components/top-products"
-import { RecentSales } from "@/components/recent-sales"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ Use React Router instead
+import { DashboardLayout } from "@/components/dashboard-layout";
+import { SalesOverview } from "@/components/sales-overview";
+import { SalesChart } from "@/components/sales-chart";
+import { TopProducts } from "@/components/top-products";
+import { RecentSales } from "@/components/recent-sales";
 
 export default function App() {
-  const [selectedMonth, setSelectedMonth] = useState("March 2025")
-  const router = useRouter()
+  const [selectedMonth, setSelectedMonth] = useState("March 2025");
+  const navigate = useNavigate(); // ✅ Corrected
 
   const handleLogout = () => {
-    // In a real app, you would handle logout here
-    router.push("/login")
-  }
+    // Handle logout logic
+    navigate("/login"); // ✅ Corrected
+  };
 
   return (
     <DashboardLayout onLogout={handleLogout}>
@@ -32,5 +32,5 @@ export default function App() {
         </div>
       </div>
     </DashboardLayout>
-  )
+  );
 }
