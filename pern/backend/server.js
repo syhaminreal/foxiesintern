@@ -42,12 +42,17 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
+
 app.use(bodyParser.urlencoded({ extended: true })); // Middleware to parse form data
 
 // Route for home page
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/index.html"); // Serve the HTML form
 });
+
+//body parser helps to pass form data
+
+console.log(req.body)
 
 // // Route for calculator
 app.post("/calculate", function (req, res) {
