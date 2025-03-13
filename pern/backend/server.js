@@ -63,6 +63,26 @@ app.post("/calculate", function (req, res) {
     res.send(`<h1>Result: ${result}</h1>`);
 });
 
+
+// Route for home page
+app.get("/", function (req, res) {
+    res.sendFile(__dirname + "/index.html"); // Serve the HTML form
+});
+
+//body parser helps to pass form data
+
+console.log(req.body)
+
+// // Route for calculator
+app.post("/calculate", function (req, res) {
+    let num1 = parseFloat(req.body.num1);
+    let num2 = parseFloat(req.body.num2);
+    let result = num1 + num2; // Simple addition
+
+    res.send(`<h1>Result: ${result}</h1>`);
+});
+//239 dekhi
+
 app.listen(3000, function () {
     console.log("Server started on port 3000");
 });
