@@ -83,3 +83,22 @@ function App() {
 }
 
 export default App;
+
+
+// password ref= current object status or condition 
+// to allow user to know if his effects on the copy are done or not 
+// passwordRef.current?.select()
+// passwordref.current?.setselctionRange(0,9) range form where to slect to form
+
+
+//usecallback memororizes the function it mght br the complete or the part of the function
+// so memory and other data can be stored
+
+
+// use effect cleanup funtion
+
+
+// useref hook
+// password ref =use ref(null) i fnot passed finds the input feild
+// // const copyPasswordtocilpboard =usecallback(()=>{
+//   window.navigator.clipboard.writeText(password)}, [password])
