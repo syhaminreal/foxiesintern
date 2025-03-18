@@ -1,0 +1,26 @@
+{
+  "host": "localhost",
+  "port": 3000,
+  "protocol": "http",
+  "admin": {
+    "user": "admin",
+    "password": "admin_password"
+  },
+  "bot": {
+    "name": "my-bot",
+    "path": "./bots/my-bot",
+    "lang": "en"
+  },
+  "logging": {
+    "level": "debug",
+    "console": true
+  },
+  "db": {
+    "type": "sqlite",
+    "url": "data/botpress.sqlite"
+  },
+  "web": {
+    "enabled": true,
+    "port": 3000
+  }
+}
