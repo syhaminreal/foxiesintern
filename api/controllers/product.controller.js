@@ -61,7 +61,4 @@ const deleteProduct = async (req, res) => {
   }
 };// Export functions using `export`
 
-
-
-
 export { getProducts, getProduct, createProduct, updateProduct, deleteProduct };
